@@ -2,10 +2,14 @@ package utnfc.isi.back.procesocsv.strategy;
 
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.opencsv.CSVReaderHeaderAware;
+
+import utnfc.isi.back.procesocsv.empleados.Empleado;
+import utnfc.isi.back.procesocsv.empleados.EmpleadoFactory;
 
 /**
  * Estrategia que implementa el Paso 3 del procesamiento del archivo
@@ -20,6 +24,11 @@ import com.opencsv.CSVReaderHeaderAware;
  * por nombre, como si fueran atributos de un objeto.
  */
 public class Step03OpenCSVMap implements StepStrategy {
+    List<Empleado> empleados = new ArrayList<>();
+
+    public List<Empleado> getEmpleados() {
+        return empleados;
+    }
 
     /**
      * Ejecuta la estrategia de lectura usando un Map<String, String> por fila,
@@ -28,7 +37,8 @@ public class Step03OpenCSVMap implements StepStrategy {
     @Override
     public void ejecutar() {
 
-        try (CSVReaderHeaderAware reader = new CSVReaderHeaderAware(new FileReader(".\\src\\main\\data\\empleados.csv"))) {
+        try (CSVReaderHeaderAware reader = new CSVReaderHeaderAware(
+                new FileReader(".\\src\\main\\data\\empleados.csv"))) {
             Map<String, String> fila;
             int contador = 0;
 
@@ -40,8 +50,16 @@ public class Step03OpenCSVMap implements StepStrategy {
                 LocalDate fecha = LocalDate.parse(fila.get("fecha"));
                 double montoBase = Double.parseDouble(fila.get("montoBase"));
 
-                Object[] datos = {legajo, nombre, tipo, categoria, fecha, montoBase};
-                System.out.println(Arrays.toString((datos)));
+                try {
+                    Empleado empleado = EmpleadoFactory.createEmpleado(legajo, nombre, tipo, categoria, fecha,
+                            montoBase);
+                    empleados.add(empleado);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                    continue;
+                }
+
                 contador++;
                 if (contador > 10) {
                     break;

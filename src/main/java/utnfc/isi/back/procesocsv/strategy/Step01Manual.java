@@ -3,8 +3,12 @@ package utnfc.isi.back.procesocsv.strategy;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import utnfc.isi.back.procesocsv.empleados.Empleado;
+import utnfc.isi.back.procesocsv.empleados.EmpleadoFactory;
 
 /**
  * Estrategia que encapsula la ejecución del Paso 1: lectura manual del CSV
@@ -20,6 +24,12 @@ public class Step01Manual implements StepStrategy {
      * Ejecuta la versión del paso 1 del proceso del csv. Este método realiza la
      * lectura manual del archivo y muestra el resultado por consola.
      */
+    private List<Empleado> empleados = new ArrayList<>();
+
+    public List<Empleado> getEmpleados(){
+        return empleados;
+    }
+    
     @Override
     public void ejecutar() {
         int contador = 0;
@@ -38,8 +48,15 @@ public class Step01Manual implements StepStrategy {
                 LocalDate fecha = LocalDate.parse(campos[4]);
                 double montoBase = Double.parseDouble(campos[5]);
 
-                Object[] datos = {legajo, nombre, tipo, categoria, fecha, montoBase};
-                System.out.println(Arrays.toString((datos)));
+                try {
+                    Empleado empleado = EmpleadoFactory.createEmpleado(legajo, nombre, tipo, categoria, fecha,
+                            montoBase);
+                    empleados.add(empleado);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                    continue;
+                }
                 contador++;
                 if (contador > 10) {
                     break;

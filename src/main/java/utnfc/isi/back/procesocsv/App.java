@@ -3,6 +3,7 @@ package utnfc.isi.back.procesocsv;
 import java.util.HashMap;
 import java.util.Map;
 
+import utnfc.isi.back.procesocsv.informes.InformeEmpleados;
 import utnfc.isi.back.procesocsv.strategy.Step01Manual;
 import utnfc.isi.back.procesocsv.strategy.Step02OpenCSVList;
 import utnfc.isi.back.procesocsv.strategy.Step03OpenCSVMap;
@@ -50,5 +51,12 @@ public class App
 
         // Ejecuta la estrategia seleccionada
         strategy.ejecutar();
+
+        InformeEmpleados informe = new InformeEmpleados(strategy.getEmpleados());
+        
+        informe.antiguedadPromedioPermanentes();
+        informe.mayorYMenorSueldo();
+        informe.porcentajeContratados();
+        informe.totalSueldosPorTipo();
     }
 }

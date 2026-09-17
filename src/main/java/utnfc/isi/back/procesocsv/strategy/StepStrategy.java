@@ -1,5 +1,9 @@
 package utnfc.isi.back.procesocsv.strategy;
 
+import java.util.List;
+
+import utnfc.isi.back.procesocsv.empleados.Empleado;
+
 /**
  * Interfaz común para todas las estrategias de ejecución.
  *
@@ -11,4 +15,5 @@ package utnfc.isi.back.procesocsv.strategy;
  */
 public interface StepStrategy {
   void ejecutar();
+  public List<Empleado> getEmpleados();
 }

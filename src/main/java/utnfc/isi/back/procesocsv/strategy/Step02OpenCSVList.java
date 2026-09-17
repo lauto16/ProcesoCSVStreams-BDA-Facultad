@@ -2,10 +2,13 @@ package utnfc.isi.back.procesocsv.strategy;
 
 import java.io.FileReader;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.CSVReader;
+
+import utnfc.isi.back.procesocsv.empleados.Empleado;
+import utnfc.isi.back.procesocsv.empleados.EmpleadoFactory;
 
 /**
  * Estrategia que implementa el Paso 2 del procesamiento del archivo
@@ -23,6 +26,11 @@ import com.opencsv.CSVReader;
  * encapsula este paso particular como una estrategia intercambiable.
  */
 public class Step02OpenCSVList implements StepStrategy {
+    List<Empleado> empleados = new ArrayList<>();
+
+    public List<Empleado> getEmpleados(){
+        return empleados;
+    }
 
     /**
      * Ejecuta el procesamiento del archivo empleados.csv usando
@@ -51,8 +59,16 @@ public class Step02OpenCSVList implements StepStrategy {
                 LocalDate fecha = LocalDate.parse(campos[4]);
                 double montoBase = Double.parseDouble(campos[5]);
 
-                Object[] datos = {legajo, nombre, tipo, categoria, fecha, montoBase};
-                System.out.println(Arrays.toString((datos)));
+                try {
+                    Empleado empleado = EmpleadoFactory.createEmpleado(legajo, nombre, tipo, categoria, fecha,
+                            montoBase);
+                    empleados.add(empleado);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                    continue;
+                }
+
                 contador++;
                 if (contador > 10) {
                     break;

@@ -47,16 +47,16 @@ public class App
             System.out.println("Paso no reconocido: " + paso);
             System.out.println("Pasos disponibles: step01, step02, step03, step04");
             return;
-        }
+        } 
 
         // Ejecuta la estrategia seleccionada
         strategy.ejecutar();
 
         InformeEmpleados informe = new InformeEmpleados(strategy.getEmpleados());
         
-        informe.antiguedadPromedioPermanentes();
-        informe.mayorYMenorSueldo();
-        informe.porcentajeContratados();
-        informe.totalSueldosPorTipo();
+        System.out.println(informe.antiguedadPromedioPermanentes());
+        System.out.println(informe.mayorYMenorSueldo());
+        System.out.println(informe.porcentajeContratados());
+        System.out.println(informe.totalSueldosPorTipo());
     }
 }
